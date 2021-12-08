@@ -1,3 +1,8 @@
 node_modules
 angularjs-frontend/.tmp
 .idea
+.env
+TODO.TXT
+appold.js
+modules/
+utils/
