@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import "./utils/db";
 //import User from "./modules/user";
 
 
