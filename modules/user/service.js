@@ -1,6 +1,7 @@
 import User from "./model";
 import {ExistError, AuthenticationError} from "../../utils/error";
 import * as jwt from "jsonwebtoken";
+import { delRedis, setRedis, getRedis } from "../../utils/redis";
 
 export const create = async (body)=>{
     try{
@@ -21,7 +22,7 @@ export const create = async (body)=>{
 
     }catch(error){
         console.error(error);
-        throw error;
+        next(error);
     }
 }
 
@@ -39,13 +40,34 @@ export const login = async ({email, password})=>{
         }
 
         const token = user.generateToken();
-
+        await setRedis("token",token);
         return{
             success:true,
             token
         }
     }catch(error){
         console.error(error);
-        throw error;
+        next(error);
+    }
+}
+
+export const logout = async (headers, res)=>{
+    try{
+        const sessionToken = await getRedis("token");
+        if(sessionToken === headers.token){
+            console.log("they match");
+          await delRedis("token");
+        }
+        // session.destroy(err => {
+        //     if (err) {
+        //         return console.error(err);
+        //     }    
+        //     return;
+        // });
+        res.end();
+
+    }catch(error){
+        console.error(error);
+        next(error);
     }
 }
