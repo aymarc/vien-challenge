@@ -34,7 +34,6 @@ export const ErrorMessage = function(message="Oops! something Went wrong"){
     return {
         error: "INTERNAL_SERVER_ERROR",
         message: message,
-        ErrorCode: "500"
     }
 } 
   

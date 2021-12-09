@@ -1,5 +1,15 @@
 import * as service from "./service";
 
+export const profile = async(req, res, next) =>{
+    try{
+        res.status(200).json(await service.profile(req.headers));
+    }catch(error){
+        console.error(error);
+        next(error);
+    }
+}
+
+
 export const create = async (req, res, next) =>{
     try{
         res.status(201).json(

@@ -1,8 +1,6 @@
 import express,{json, urlencoded, raw} from "express";
 import cors from "cors";
-
-
-import "./utils/db";
+import * as db from "./utils/db";
 import User from "./modules/user";
 import {ErrorMessage} from "./utils/error";
 
@@ -42,8 +40,7 @@ app.use("/api", User);
 app.use((err, req, res,next)=>{
     if(!err){
         return next();
-    }
-    console.info("executing middleware");   
+    } 
     //res.status(err.httpStatusCode || 500).json({success:false, "message":err});
     res.status(err.httpStatusCode || 500).json(ErrorMessage("Oops! Something went Wrong"));
 });
@@ -55,6 +52,9 @@ app.use((req,res)=>{
     });
 });
 
+while(!db.getState){
+    //console.info("=====Waiting for mongo to start=====");
+}
 
 //RUN SERVER ON PORT 8000
 try{

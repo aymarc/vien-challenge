@@ -1,7 +1,25 @@
 import User from "./model";
-import {ExistError, AuthenticationError} from "../../utils/error";
+import {ExistError, AuthenticationError, NotFoundError} from "../../utils/error";
 import * as jwt from "jsonwebtoken";
 import { delRedis, setRedis, getRedis } from "../../utils/redis";
+
+export const profile = async ({user})=>{
+    try{
+        const userExist = await User.findOne({_id:user.id});
+        if(!userExist){
+            throw new NotFoundError("Opps! We Could not find your profile. Kindly contact support");
+        }
+        console.log(userExist);
+        return{
+            success:true,
+            id: userExist._id,
+            name:userExist.name,
+            email: userExist.email
+        }
+    }catch(error){
+        console.error(error)
+    }
+}
 
 export const create = async (body)=>{
     try{
@@ -55,15 +73,9 @@ export const logout = async (headers, res)=>{
     try{
         const sessionToken = await getRedis("token");
         if(sessionToken === headers.token){
-            console.log("they match");
           await delRedis("token");
         }
-        // session.destroy(err => {
-        //     if (err) {
-        //         return console.error(err);
-        //     }    
-        //     return;
-        // });
+        
         res.end();
 
     }catch(error){

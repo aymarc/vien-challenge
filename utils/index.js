@@ -1,6 +1,6 @@
 import {ErrorMessage, ValidationError, AccessDenied, AuthenticationError} from "./error";
 import * as jwt from "jsonwebtoken";
-
+import { getRedis } from "./redis";
 
 export function bodyValidator(schemaName){
     // console.log("Break point", schemaName);
@@ -70,7 +70,7 @@ export function queryValidator(schemaName){
 }     
 
 
-export const auth = (req, res, next) => {
+export const auth =  (req, res, next) => {
     //sconsole.log(req.headers)
   
     try {
@@ -85,8 +85,17 @@ export const auth = (req, res, next) => {
         token = authHeader.split(' ')[1];
       }
       ///console.log(token);
-  
       const decoded = jwt.verify(token, process.env.APP_KEY);
+        let sessionToken ;
+        getRedis("token").then((data)=>{
+          sessionToken = data;
+        }).catch(err =>{
+          next(error);
+        })
+        if(!sessionToken || sessionToken !== token){
+          throw new AccessDenied("Session expired. Kindly Login to proceed.");
+        }
+     
       req.headers.user = decoded;
       req.headers.token = token;
     } catch (err) {
