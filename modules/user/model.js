@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 import { hashSync, compareSync } from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 
-const schema = new mongoose.schema(
+const schema = new mongoose.Schema(
     {
         name:{
             type:String,
-            required: true,
         },
 
         email:{
@@ -33,13 +32,15 @@ schema.methods = {
       return false;
     },
     generateToken: function () {
-      return  jwt.sign({
-        data: {
+      return  jwt.sign(
+        {
           _id: this._id,
           name: this.name,
         },
-        secreteKey: process.env.APP_KEY,
-        duration: "5h",
-      });
+        process.env.APP_KEY,
+        { expiresIn: "2h"}
+      );
     },
   };
+
+  export default mongoose.model("users", schema);
