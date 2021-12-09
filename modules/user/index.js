@@ -11,5 +11,9 @@ route.post("/register",
     bodyValidator(validation.create),
     controller.create
 )
+route.post("/login", 
+    bodyValidator(validation.login),
+    controller.login
+)
 
 export default route;
