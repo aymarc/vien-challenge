@@ -1,3 +1,4 @@
+
 import redis from "redis";
 
 
@@ -18,7 +19,9 @@ export function setRedis(key, data) {
       if (typeof data === 'object') data = JSON.stringify(data);
       if (typeof key === 'object') key = key.toString();
       Redis.set(key, data, err => {
-        if (err) rej(err);
+        if (err) {
+          rej(err);
+        }
         ful(true);
       });
     });
@@ -29,7 +32,9 @@ export function setRedis(key, data) {
       if (typeof data === 'object') data = JSON.stringify(data);
       if (typeof key === 'object') key = key.toString();
       Redis.setex(key, duration, data, err => {
-        if (err) rej(err);
+        if (err) {
+          rej(err);
+        }
         ful(true);
       });
     });
@@ -39,7 +44,10 @@ export function setRedis(key, data) {
     return new Promise((ful, rej) => {
       if (typeof key === 'object') key = key.toString();
       Redis.get(key, (err, data) => {
-        if (err) rej(err);
+        if (err) {
+         rej(err);
+         return null
+        }
   
         return parse ? ful(JSON.parse(data)) : ful(data);
       });
@@ -51,7 +59,9 @@ export function setRedis(key, data) {
     return new Promise((ful, rej) => {
       if (typeof key === 'object') key = key.toString();
       Redis.del(key, err => {
-        if (err) rej(err);
+         if (err) {
+          rej(err);
+        }
   
         return ful(true);
       });

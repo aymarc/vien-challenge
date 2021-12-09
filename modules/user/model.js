@@ -34,7 +34,7 @@ schema.methods = {
     generateToken: function () {
       return  jwt.sign(
         {
-          _id: this._id,
+          id: this._id,
           name: this.name,
         },
         process.env.APP_KEY,
