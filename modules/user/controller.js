@@ -20,3 +20,12 @@ export const login = async (req, res, next) =>{
         next(error);
     }
 }
+
+
+export const logout = async(req, res, next) =>{
+    try{
+        await service.logout(req.headers,res)
+    }catch(error){
+
+    }
+}

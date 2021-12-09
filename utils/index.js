@@ -86,8 +86,9 @@ export const auth = (req, res, next) => {
       }
       ///console.log(token);
   
-      const decoded = jwt.verify(token, env.TOKEN_KEY);
+      const decoded = jwt.verify(token, process.env.APP_KEY);
       req.headers.user = decoded;
+      req.headers.token = token;
     } catch (err) {
       console.error("\n\n*****start****\n", "Authentication failed: You may have sent an invalid token.'", "\n\n logs \n", err, "\n\n*****end****\n");
       throw new AuthenticationError("Session expired. Kindly login again.")

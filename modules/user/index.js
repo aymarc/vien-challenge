@@ -16,4 +16,9 @@ route.post("/login",
     controller.login
 )
 
+route.post("/logout", 
+    auth,
+    controller.logout
+)
+
 export default route;

@@ -30,10 +30,12 @@ export const ExistError = function(message=""){
     this.httpStatusCode = "400";
 } 
 
-export const ErrorMessage = function(message=""){
-    this.name = "INTERNAL_SERVER_ERROR";
-    this.message = message;
-    this.httpStatusCode = "500";
+export const ErrorMessage = function(message="Oops! something Went wrong"){
+    return {
+        error: "INTERNAL_SERVER_ERROR",
+        message: message,
+        ErrorCode: "500"
+    }
 } 
   
 ValidationError.prototype = Object.create(Error.prototype);
@@ -42,7 +44,7 @@ NotFoundError.prototype = Object.create(Error.prototype);
 
 AccessDenied.prototype = Object.create(Error.prototype);
 
-ErrorMessage.prototype = Object.create(Error.prototype);
+//ErrorMessage.prototype = Object.create(Error.prototype);
 
 ExistError.prototype = Object.create(Error.prototype);
 
