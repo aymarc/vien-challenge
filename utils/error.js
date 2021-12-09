@@ -1,10 +1,16 @@
 
 
 export const ValidationError = function(message=""){
-    this.name = "NOT_FOUND";
+    this.name = "NOT_VALID";
+    this.message = message;
+    this.httpStatusCode = "400";
+} 
+
+export const AuthenticationError = function(message=""){
+    this.name = "NOT_AUTHORIZED";
     this.message = message;
     this.httpStatusCode = "401";
-} 
+}
 
 export const NotFoundError = function(message=""){
     this.name = "NOT_FOUND";
@@ -21,7 +27,7 @@ export const AccessDenied = function(message=""){
 export const ExistError = function(message=""){
     this.name = "ENTRY_ALREADY_EXIST";
     this.message = message;
-    this.httpStatusCode = "409";
+    this.httpStatusCode = "400";
 } 
 
 export const ErrorMessage = function(message=""){
@@ -39,3 +45,5 @@ AccessDenied.prototype = Object.create(Error.prototype);
 ErrorMessage.prototype = Object.create(Error.prototype);
 
 ExistError.prototype = Object.create(Error.prototype);
+
+AuthenticationError.prototype = Object.create(Error.prototype);

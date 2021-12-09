@@ -1,19 +1,23 @@
-import express from "express";
+import express,{json, urlencoded, raw} from "express";
 import cors from "cors";
-import bodyParser from "body-parser";
+
 import "./utils/db";
-//import User from "./modules/user";
+import User from "./modules/user";
 
 
 const app = express();
 
 
 //INITIALIZE MIDDLEWARES
-app.use(cors);
-app.use(bodyParser);
-if(process.env.NODE_ENV === "development"){
+
+app.use(json());
+app.use(urlencoded({ extended: true }));
+app.use(raw());
+app.use(cors());
+
+//if(process.env.NODE_ENV === "development"){
     app.use((req, res ,next)=>{
-        console.info("=====================START=======================");
+        console.log("=====================START=======================");
 
         const requestObject = {
             ENDPOINT: `${req.get("HOST")}${req.originalUrl}`,
@@ -24,14 +28,14 @@ if(process.env.NODE_ENV === "development"){
             PARAMS: req.params,
         }
 
-        console.info(requestObject);
-        console.info("======================END=========================");
+        console.log(requestObject);
+        console.log("======================END=========================");
+        next();
     });
-}
-
+//}
 //INITIALIZE ROUTE MIDDLEWARE
-const prefix = "/api";
-//app.use(prefix, User);
+
+app.use("/api", User);
 
 app.use((err, req, res,next)=>{
     if(!err){
@@ -48,6 +52,10 @@ app.use((req,res)=>{
 });
 
 //RUN SERVER ON PORT 8000
-app.listen(process.env.PORT || 8000, ()=>{
-    console.log(`App is running on port ${process.env.PORT || 8000}`);
-});
+try{
+    app.listen(process.env.PORT || 8000, ()=>{
+        console.log(`App is running on port ${process.env.PORT || 8000}`);
+    });
+}catch(err){
+    console.error(error);
+}
